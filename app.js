@@ -466,36 +466,33 @@ function buildSignatureHTML() {
               style="width:220px;max-width:220px;height:auto;display:block;border:0;" />`
         : '';
 
-    // Datos de texto (interlineado ultra compacto extra estrecho)
+    // Datos de texto (ultra compacto con <br>)
     const rows = [];
-    if (nombre) rows.push(`<tr><td style="padding:0;">
-    <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:16px;font-weight:700;color:${color};line-height:1.0;">${escHtml(nombre)}</span>
-  </td></tr>`);
 
-    if (cargo) rows.push(`<tr><td style="padding:0; padding-bottom: 3px;">
-    <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#555555;font-style:italic;line-height:1.0;">${escHtml(cargo)}</span>
-  </td></tr>`);
-
-    if (telefono || correo || sucursal) {
+    if (nombre) {
         rows.push(`<tr><td style="padding:0;">
-      <table cellpadding="0" cellspacing="0" border="0">
-        ${telefono ? `<tr><td style="padding:0;">
-          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#444444;line-height:1.0;">
-            <span style="color:${color};font-weight:600;">📞</span>&nbsp;${escHtml(telefono)}
+          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:16px;font-weight:700;color:${color};line-height:0.95;display:block;">${escHtml(nombre)}</span>
+        </td></tr>`);
+    }
+
+    if (cargo) {
+        rows.push(`<tr><td style="padding:0;">
+          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#555555;font-style:italic;line-height:0.95;display:block;">${escHtml(cargo)}</span>
+        </td></tr>`);
+    }
+
+    const infoLines = [];
+    if (telefono) infoLines.push(`<span style="color:${color};font-weight:600;">📞</span>&nbsp;${escHtml(telefono)}`);
+    if (correo) infoLines.push(`<span style="color:${color};font-weight:600;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;">${escHtml(correo)}</a>`);
+    if (sucursal) infoLines.push(`<span style="color:${color};font-weight:600;">🏢</span>&nbsp;${escHtml(sucursal)}`);
+
+    if (infoLines.length > 0) {
+        // Agrupamos el contacto en una sola celda separados por <br>
+        rows.push(`<tr><td style="padding:0; padding-top: 2px;">
+          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#444444;line-height:1.05;display:block;">
+            ${infoLines.join('<br>')}
           </span>
-        </td></tr>` : ''}
-        ${correo ? `<tr><td style="padding:0;">
-          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#444444;line-height:1.0;">
-            <span style="color:${color};font-weight:600;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;">${escHtml(correo)}</a>
-          </span>
-        </td></tr>` : ''}
-        ${sucursal ? `<tr><td style="padding:0;">
-          <span style="font-family:Calibri,Segoe UI,Arial,sans-serif;font-size:12px;color:#444444;line-height:1.0;">
-            <span style="color:${color};font-weight:600;">🏢</span>&nbsp;${escHtml(sucursal)}
-          </span>
-        </td></tr>` : ''}
-      </table>
-    </td></tr>`);
+        </td></tr>`);
     }
 
     let finalTable = '';
