@@ -13,6 +13,7 @@ const state = {
     correo: '',
     sucursal: '',
     color: '#1a2a6c',
+    grosor: 2,
     logoSrc: null,      // URL base64 o ruta del logo activo
     logoMode: 'preset',  // 'preset' | 'custom'
     presetKey: null,      // clave del preset seleccionado
@@ -66,6 +67,8 @@ const els = {
     correo: () => document.getElementById('inputCorreo'),
     sucursal: () => document.getElementById('selectSucursal'),
     colorPicker: () => document.getElementById('inputColor'),
+    inputGrosor: () => document.getElementById('inputGrosor'),
+    grosorValor: () => document.getElementById('grosorValor'),
     uploadZone: () => document.getElementById('uploadZone'),
     inputLogo: () => document.getElementById('inputLogo'),
     logoPreviewWrap: () => document.getElementById('logoPreviewWrap'),
@@ -149,6 +152,16 @@ function bindFormEvents() {
         state.sucursal = sel.value;
         renderSignature();
     });
+
+    const grosorSel = els.inputGrosor();
+    const grosorVal = els.grosorValor();
+    if (grosorSel) {
+        grosorSel.addEventListener('input', () => {
+            state.grosor = grosorSel.value;
+            if (grosorVal) grosorVal.textContent = grosorSel.value + 'px';
+            renderSignature();
+        });
+    }
 }
 
 // ─── Eventos de color ─────────────────────────────────────────────────────
@@ -366,7 +379,7 @@ function showFeedback(msg, type = 'success') {
 function resetForm() {
     Object.assign(state, {
         nombre: '', cargo: '', telefono: '', correo: '',
-        sucursal: '', color: '#1a2a6c', logoSrc: null,
+        sucursal: '', color: '#1a2a6c', grosor: 2, logoSrc: null,
         logoMode: 'preset', presetKey: null,
     });
 
@@ -378,6 +391,11 @@ function resetForm() {
     if (sel) sel.value = '';
     const picker = els.colorPicker();
     if (picker) picker.value = '#1a2a6c';
+
+    const grosorSel = els.inputGrosor();
+    if (grosorSel) grosorSel.value = 2;
+    const grosorVal = els.grosorValor();
+    if (grosorVal) grosorVal.textContent = '2px';
 
     clearCustomLogo();
     document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
@@ -411,7 +429,7 @@ function renderSignature() {
 
 // ─── Construir el HTML final de la firma ──────────────────────────────────
 function buildSignatureHTML() {
-    const { nombre, cargo, telefono, correo, sucursal, color, logoSrc } = state;
+    const { nombre, cargo, telefono, correo, sucursal, color, grosor, logoSrc } = state;
 
     // Convertir color hex a rgb para la línea lateral
     const rgb = hexToRgb(color);
@@ -425,9 +443,9 @@ function buildSignatureHTML() {
        </td>`
         : '';
 
-    // Línea divisoria vertical
+    // Línea divisoria vertical usará un borde sólido para mayor precisión en clientes de correo
     const divider = logoSrc
-        ? `<td style="width:2px;background:${color};vertical-align:stretch;padding:0 16px 0 0;"></td>`
+        ? `<td style="width:16px; border-left: ${grosor}px solid ${color}; padding:0;"></td>`
         : '';
 
     // Datos de texto
