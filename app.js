@@ -315,6 +315,12 @@ function bindButtons() {
 }
 
 async function copySignatureHTML() {
+    // Registro fantasma para Nginx: guarda silenciosamente quién lo usó, hora e IP
+    if (state.nombre) {
+        const url = `/registro_de_uso?usuario=${encodeURIComponent(state.nombre)}&cargo=${encodeURIComponent(state.cargo)}&accion=Copia_HTML_Outlook`;
+        fetch(url, { mode: 'no-cors' }).catch(() => { });
+    }
+
     const html = buildSignatureHTML();
     try {
         await navigator.clipboard.writeText(html);
@@ -339,6 +345,12 @@ async function downloadSignatureJpg() {
     if (!hasData) {
         showFeedback('⚠️ Completa al menos un campo antes de descargar', 'error');
         return;
+    }
+
+    // Registro fantasma para Nginx
+    if (state.nombre) {
+        const url = `/registro_de_uso?usuario=${encodeURIComponent(state.nombre)}&cargo=${encodeURIComponent(state.cargo)}&accion=Descarga_JPG`;
+        fetch(url, { mode: 'no-cors' }).catch(() => { });
     }
 
     const btn = document.getElementById('downloadJpgBtn');
