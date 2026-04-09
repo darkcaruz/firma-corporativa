@@ -337,7 +337,7 @@ async function copySignatureHTML() {
     }
 }
 
-// ─── Descargar firma como JPG ─────────────────────────────────────────────
+// ─── Descargar firma como PNG ─────────────────────────────────────────────
 async function downloadSignatureJpg() {
     const { nombre, cargo, telefono, correo, sucursal, logoSrc } = state;
     const hasData = nombre || cargo || telefono || correo || sucursal || logoSrc;
@@ -349,7 +349,7 @@ async function downloadSignatureJpg() {
 
     // Registro fantasma para Nginx
     if (state.nombre) {
-        const url = `/registro_de_uso?usuario=${encodeURIComponent(state.nombre)}&cargo=${encodeURIComponent(state.cargo)}&accion=Descarga_JPG`;
+        const url = `/registro_de_uso?usuario=${encodeURIComponent(state.nombre)}&cargo=${encodeURIComponent(state.cargo)}&accion=Descarga_PNG`;
         fetch(url, { mode: 'no-cors' }).catch(() => { });
     }
 
@@ -382,11 +382,11 @@ async function downloadSignatureJpg() {
             logging: false,
         });
 
-        // Descargar como JPG
+        // Descargar como PNG
         const link = document.createElement('a');
         const nombreArchivo = (nombre || 'firma').replace(/\s+/g, '_').toLowerCase();
-        link.download = `firma_${nombreArchivo}.jpg`;
-        link.href = canvas.toDataURL('image/jpeg', 0.95);
+        link.download = `firma_${nombreArchivo}.png`;
+        link.href = canvas.toDataURL('image/png');
         link.click();
 
         showFeedback('✅ ¡Imagen descargada correctamente!', 'success');
@@ -395,7 +395,7 @@ async function downloadSignatureJpg() {
         showFeedback('❌ Error al generar la imagen. Intenta de nuevo.', 'error');
     } finally {
         document.body.removeChild(wrapper);
-        if (btn) { btn.disabled = false; btn.innerHTML = '⬇️ Descargar JPG'; }
+        if (btn) { btn.disabled = false; btn.innerHTML = '⬇️ Descargar PNG'; }
     }
 }
 
