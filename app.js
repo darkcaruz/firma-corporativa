@@ -14,6 +14,7 @@ const state = {
     sucursal: '',
     color: '#1a2a6c',
     grosor: 2,
+    layout: 'vertical',
     logoSrc: null,      // URL base64 o ruta del logo activo
     logoMode: 'preset',  // 'preset' | 'custom'
     presetKey: null,      // clave del preset seleccionado
@@ -69,6 +70,8 @@ const els = {
     colorPicker: () => document.getElementById('inputColor'),
     inputGrosor: () => document.getElementById('inputGrosor'),
     grosorValor: () => document.getElementById('grosorValor'),
+    btnLayoutVertical: () => document.getElementById('btnLayoutVertical'),
+    btnLayoutHorizontal: () => document.getElementById('btnLayoutHorizontal'),
     uploadZone: () => document.getElementById('uploadZone'),
     inputLogo: () => document.getElementById('inputLogo'),
     logoPreviewWrap: () => document.getElementById('logoPreviewWrap'),
@@ -159,6 +162,23 @@ function bindFormEvents() {
         grosorSel.addEventListener('input', () => {
             state.grosor = grosorSel.value;
             if (grosorVal) grosorVal.textContent = grosorSel.value + 'px';
+            renderSignature();
+        });
+    }
+
+    const layoutVert = els.btnLayoutVertical();
+    const layoutHoriz = els.btnLayoutHorizontal();
+    if (layoutVert && layoutHoriz) {
+        layoutVert.addEventListener('click', () => {
+            state.layout = 'vertical';
+            layoutVert.classList.add('tab-active');
+            layoutHoriz.classList.remove('tab-active');
+            renderSignature();
+        });
+        layoutHoriz.addEventListener('click', () => {
+            state.layout = 'horizontal';
+            layoutHoriz.classList.add('tab-active');
+            layoutVert.classList.remove('tab-active');
             renderSignature();
         });
     }
@@ -379,7 +399,7 @@ function showFeedback(msg, type = 'success') {
 function resetForm() {
     Object.assign(state, {
         nombre: '', cargo: '', telefono: '', correo: '',
-        sucursal: '', color: '#1a2a6c', grosor: 2, logoSrc: null,
+        sucursal: '', color: '#1a2a6c', grosor: 2, layout: 'vertical', logoSrc: null,
         logoMode: 'preset', presetKey: null,
     });
 
@@ -396,6 +416,11 @@ function resetForm() {
     if (grosorSel) grosorSel.value = 2;
     const grosorVal = els.grosorValor();
     if (grosorVal) grosorVal.textContent = '2px';
+
+    const layoutVert = els.btnLayoutVertical();
+    const layoutHoriz = els.btnLayoutHorizontal();
+    if (layoutVert) layoutVert.classList.add('tab-active');
+    if (layoutHoriz) layoutHoriz.classList.remove('tab-active');
 
     clearCustomLogo();
     document.querySelectorAll('.preset-card').forEach(c => c.classList.remove('selected'));
@@ -429,23 +454,16 @@ function renderSignature() {
 
 // ─── Construir el HTML final de la firma ──────────────────────────────────
 function buildSignatureHTML() {
-    const { nombre, cargo, telefono, correo, sucursal, color, grosor, logoSrc } = state;
+    const { nombre, cargo, telefono, correo, sucursal, color, grosor, layout, logoSrc } = state;
 
     // Convertir color hex a rgb para la línea lateral
     const rgb = hexToRgb(color);
     const colorLight = `rgba(${rgb.r},${rgb.g},${rgb.b},0.12)`;
 
-    // Bloque del logo
-    const logoBlock = logoSrc
-        ? `<td style="padding:0 20px 0 0;vertical-align:middle;">
-         <img src="${logoSrc}" alt="Valenzuela &amp; Delarze"
-              style="width:220px;max-width:220px;height:auto;display:block;border:0;" />
-       </td>`
-        : '';
-
-    // Línea divisoria vertical usará un borde sólido para mayor precisión en clientes de correo
-    const divider = logoSrc
-        ? `<td style="width:16px; border-left: ${grosor}px solid ${color}; padding:0;"></td>`
+    // Etiqueta img del logo
+    const logoImg = logoSrc
+        ? `<img src="${logoSrc}" alt="Valenzuela &amp; Delarze"
+              style="width:220px;max-width:220px;height:auto;display:block;border:0;" />`
         : '';
 
     // Datos de texto
@@ -480,22 +498,43 @@ function buildSignatureHTML() {
     </td></tr>`);
     }
 
-    return `<!-- Firma Corporativa — Valenzuela & Delarze -->
-<table cellpadding="0" cellspacing="0" border="0"
-  style="font-family:Calibri,Segoe UI,Arial,sans-serif;border-collapse:collapse;max-width:600px;">
-  <tr>
-    <td style="padding:12px 0 0 0;">
+    let finalTable = '';
+
+    if (layout === 'horizontal') {
+        finalTable = `
+      <table cellpadding="0" cellspacing="0" border="0" style="width:100%;">
+        ${rows.length > 0 ? `<tr>
+          <td style="vertical-align:top;padding:0 0 16px 0;">
+            <table cellpadding="0" cellspacing="0" border="0">
+              ${rows.join('\n              ')}
+            </table>
+          </td>
+        </tr>` : ''}
+        ${logoSrc ? `<tr><td style="border-top: ${grosor}px solid ${color}; padding:0 0 16px 0; font-size:0; line-height:0;">&nbsp;</td></tr>` : ''}
+        ${logoSrc ? `<tr><td style="padding:0;">${logoImg}</td></tr>` : ''}
+      </table>`;
+    } else {
+        // Vertical layout
+        finalTable = `
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
-          ${logoBlock}
-          ${divider}
+          ${logoSrc ? `<td style="padding:0 20px 0 0;vertical-align:middle;">${logoImg}</td>` : ''}
+          ${logoSrc ? `<td style="width:16px; border-left: ${grosor}px solid ${color}; padding:0;"></td>` : ''}
           <td style="vertical-align:top;padding:${logoSrc ? '0' : '0 0 0 0'};">
             <table cellpadding="0" cellspacing="0" border="0">
               ${rows.join('\n              ')}
             </table>
           </td>
         </tr>
-      </table>
+      </table>`;
+    }
+
+    return `<!-- Firma Corporativa — Valenzuela & Delarze -->
+<table cellpadding="0" cellspacing="0" border="0"
+  style="font-family:Calibri,Segoe UI,Arial,sans-serif;border-collapse:collapse;max-width:600px;">
+  <tr>
+    <td style="padding:12px 0 0 0;">
+      ${finalTable}
     </td>
   </tr>
 </table>`;
