@@ -460,9 +460,17 @@ function buildSignatureHTML() {
     const rgb = hexToRgb(color);
     const colorLight = `rgba(${rgb.r},${rgb.g},${rgb.b},0.12)`;
 
+    // Convertir ruta de imagen a URL absoluta (necesario para Outlook/Gmail)
+    let absoluteLogoUrl = logoSrc;
+    if (logoSrc && !logoSrc.startsWith('http') && !logoSrc.startsWith('data:')) {
+        const a = document.createElement('a');
+        a.href = logoSrc;
+        absoluteLogoUrl = a.href; // Transforma "foto.jpg" a "https://firma.valdelarze.cl/foto.jpg"
+    }
+
     // Etiqueta img del logo
-    const logoImg = logoSrc
-        ? `<img src="${logoSrc}" alt="Valenzuela &amp; Delarze"
+    const logoImg = absoluteLogoUrl
+        ? `<img src="${absoluteLogoUrl}" alt="Valenzuela &amp; Delarze"
               style="width:220px;max-width:220px;height:auto;display:block;border:0;" />`
         : '';
 
