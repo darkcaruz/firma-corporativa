@@ -478,9 +478,15 @@ function buildSignatureHTML() {
     const rows = [];
     const infoLines = [];
 
+    let cleanPhone = '';
+    if (telefono) {
+        // Limpia el número para formato internacional (solo números)
+        cleanPhone = telefono.replace(/[^0-9]/g, '');
+    }
+
     if (nombre) infoLines.push(`<span style="font-size:16px;font-weight:700;color:${color};">${escHtml(nombre)}</span>`);
     if (cargo) infoLines.push(`<span style="font-size:12px;color:#555555;font-style:italic;">${escHtml(cargo)}</span>`);
-    if (telefono) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">📞</span>&nbsp;${escHtml(telefono)}</span>`);
+    if (telefono) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">📞</span>&nbsp;<a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#444444;text-decoration:none;">${escHtml(telefono)}</a></span>`);
     if (correo) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;">${escHtml(correo)}</a></span>`);
     if (sucursal) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">🏢</span>&nbsp;${escHtml(sucursal)}</span>`);
 
