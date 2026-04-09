@@ -486,9 +486,9 @@ function buildSignatureHTML() {
 
     if (nombre) infoLines.push(`<span style="font-size:16px;font-weight:700;color:${color};">${escHtml(nombre)}</span>`);
     if (cargo) infoLines.push(`<span style="font-size:12px;color:#555555;font-style:italic;">${escHtml(cargo)}</span>`);
-    if (telefono) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">📞</span>&nbsp;<a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#444444;text-decoration:none;">${escHtml(telefono)}</a></span>`);
-    if (correo) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;">${escHtml(correo)}</a></span>`);
-    if (sucursal) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;">🏢</span>&nbsp;${escHtml(sucursal)}</span>`);
+    if (telefono) infoLines.push(`<span style="font-size:12px;color:#444444;"><a href="https://wa.me/${cleanPhone}" target="_blank" style="text-decoration:none;"><img src="https://firma.valdelarze.cl/whatsapp.png" alt="WA" width="13" height="13" style="vertical-align:middle; border:0; margin-right:3px;"></a><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#444444;text-decoration:none;vertical-align:middle;">${escHtml(telefono)}</a></span>`);
+    if (correo) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;vertical-align:middle;">${escHtml(correo)}</a></span>`);
+    if (sucursal) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">🏢</span>&nbsp;<span style="vertical-align:middle;">${escHtml(sucursal)}</span></span>`);
 
     if (infoLines.length > 0) {
         rows.push(`<tr><td style="padding:0; margin:0; font-family:Calibri,Segoe UI,Arial,sans-serif; line-height:14px; mso-line-height-rule:exactly;">
