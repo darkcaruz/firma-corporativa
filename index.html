@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generador de Firma Corporativa — Valenzuela &amp; Delarze</title>
+    <meta name="description"
+        content="Crea firmas de correo corporativas profesionales para Valenzuela & Delarze. Elige tu marca, completa tus datos y copia la firma en segundos." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="logo_vd.png" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" defer></script>
+</head>
+
+<body>
+
+    <!-- BACKGROUND BLOBS -->
+    <div class="bg-blob blob1"></div>
+    <div class="bg-blob blob2"></div>
+    <div class="bg-blob blob3"></div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <img src="logo_vd.png" alt="Valenzuela & Delarze" class="header-logo-img" />
+                </div>
+                <div>
+                    <span class="logo-title">FirmaPro</span>
+                    <span class="logo-sub">Valenzuela &amp; Delarze</span>
+                </div>
+            </div>
+            <span class="badge-version">Generador de Firmas</span>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+        <!-- ══════════════════════════════════════════════
+         LEFT PANEL: FORMULARIO
+    ══════════════════════════════════════════════ -->
+        <section class="panel form-panel glass" id="form-panel" aria-label="Formulario de firma">
+            <div class="panel-header">
+                <h1 class="panel-title">Crear Firma</h1>
+                <p class="panel-subtitle">Completa los datos — la vista previa se actualiza en tiempo real</p>
+            </div>
+
+            <form id="signatureForm" autocomplete="off" novalidate>
+
+                <!-- NOMBRE -->
+                <div class="field-group">
+                    <label class="field-label" for="inputNombre">
+                        <span class="field-icon">👤</span> Nombre Completo
+                    </label>
+                    <input type="text" id="inputNombre" class="field-input" placeholder="Ej: María González"
+                        maxlength="60" />
+                </div>
+
+                <!-- CARGO -->
+                <div class="field-group">
+                    <label class="field-label" for="inputCargo">
+                        <span class="field-icon">💼</span> Cargo / Título
+                    </label>
+                    <input type="text" id="inputCargo" class="field-input" placeholder="Ej: Ejecutiva Comercial"
+                        maxlength="60" />
+                </div>
+
+                <!-- TELÉFONO -->
+                <div class="field-group">
+                    <label class="field-label" for="inputTelefono">
+                        <span class="field-icon">📞</span> Número de Teléfono
+                    </label>
+                    <input type="tel" id="inputTelefono" class="field-input" placeholder="Ej: +56 9 1234 5678"
+                        maxlength="30" />
+                </div>
+
+                <!-- CORREO -->
+                <div class="field-group">
+                    <label class="field-label" for="inputCorreo">
+                        <span class="field-icon">✉️</span> Correo Electrónico
+                    </label>
+                    <input type="email" id="inputCorreo" class="field-input"
+                        placeholder="Ej: nombre@valenzueladelarze.cl" maxlength="80" />
+                </div>
+
+                <!-- SUCURSAL -->
+                <div class="field-group">
+                    <label class="field-label" for="selectSucursal">
+                        <span class="field-icon">🏢</span> Sucursal
+                    </label>
+                    <select id="selectSucursal" class="field-input field-select">
+                        <option value="">-- Selecciona una sucursal --</option>
+                        <optgroup label="Providencia">
+                            <option value="Manuel Montt 1283, Providencia">Manuel Montt 1283 — Providencia</option>
+                            <option value="Francisco Bilbao 1275, Providencia">Francisco Bilbao 1275 — Providencia
+                            </option>
+                            <option value="Bellavista, Providencia">Bellavista — Providencia</option>
+                            <option value="Til Til 2838, Providencia">Til Til 2838 — Providencia</option>
+                            <option value="Manuel Montt 1320, Providencia">Manuel Montt 1320 — Providencia</option>
+                        </optgroup>
+                        <optgroup label="Vitacura">
+                            <option value="Padre Hurtado Norte 1580, Vitacura">Padre Hurtado Norte 1580 — Vitacura
+                            </option>
+                            <option value="Padre Hurtado Norte 1404, Vitacura">Padre Hurtado Norte 1404 — Vitacura
+                            </option>
+                        </optgroup>
+                        <optgroup label="Ñuñoa">
+                            <option value="Irarrazaval 370, Ñuñoa">Irarrazaval 370 — Ñuñoa</option>
+                            <option value="Irarrazaval 390, Ñuñoa">Irarrazaval 390 — Ñuñoa</option>
+                            <option value="Mall Plaza Egaña, Larraín 5862, Ñuñoa">Mall Plaza Egaña, Larraín 5862 — Ñuñoa
+                            </option>
+                        </optgroup>
+                        <optgroup label="Cerrillos">
+                            <option value="Pedro Aguirre Cerda 5007, Cerrillos">Pedro Aguirre Cerda 5007 — Cerrillos
+                            </option>
+                        </optgroup>
+                        <optgroup label="Independencia">
+                            <option value="Av. Independencia #565 Local TM-35, Independencia">Av. Independencia #565
+                                Local TM-35 — Independencia</option>
+                        </optgroup>
+                        <optgroup label="Maipú">
+                            <option value="Mall Plaza Oeste, Américo Vespucio 1501, Maipú">Mall Plaza Oeste, Américo
+                                Vespucio 1501 — Maipú</option>
+                        </optgroup>
+                        <optgroup label="Pudahuel">
+                            <option value="La Travesía 6967, Pudahuel">La Travesía 6967 — Pudahuel</option>
+                        </optgroup>
+                        <optgroup label="Viña del Mar">
+                            <option value="Quillota 420, Viña del Mar">Quillota 420 — Viña del Mar</option>
+                            <option value="Quillota 551, Viña del Mar">Quillota 551 — Viña del Mar</option>
+                        </optgroup>
+                        <optgroup label="Quillota">
+                            <option value="Quillota, Quillota">Quillota — Quillota</option>
+                        </optgroup>
+                        <optgroup label="Quilpué">
+                            <option value="Ramón Freire 2414, Quilpué">Ramón Freire 2414 — Quilpué</option>
+                        </optgroup>
+                        <optgroup label="Valparaíso">
+                            <option value="Francia 342, Valparaíso">Francia 342 — Valparaíso</option>
+                        </optgroup>
+                        <optgroup label="El Salto">
+                            <option value="Limache 4145, El Salto">Limache 4145 — El Salto</option>
+                        </optgroup>
+                        <optgroup label="Los Andes">
+                            <option value="Argentina 1130, Los Andes">Argentina 1130 — Los Andes</option>
+                        </optgroup>
+                        <optgroup label="San Felipe">
+                            <option value="O'Higgins 961, San Felipe">O'Higgins 961 — San Felipe</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- COLOR ACENTO -->
+                <div class="field-group">
+                    <label class="field-label" for="inputColor">
+                        <span class="field-icon">🎨</span> Color Corporativo
+                    </label>
+                    <div class="color-row">
+                        <input type="color" id="inputColor" class="color-picker" value="#1a2a6c" />
+                        <div class="color-presets">
+                            <button type="button" class="color-dot active" data-color="#1a2a6c"
+                                style="background:#1a2a6c" title="Azul Corporativo"></button>
+                            <button type="button" class="color-dot" data-color="#0f4c81" style="background:#0f4c81"
+                                title="Azul Marino"></button>
+                            <button type="button" class="color-dot" data-color="#b71c1c" style="background:#b71c1c"
+                                title="Rojo Honda"></button>
+                            <button type="button" class="color-dot" data-color="#1b5e20" style="background:#1b5e20"
+                                title="Verde"></button>
+                            <button type="button" class="color-dot" data-color="#222222" style="background:#222222"
+                                title="Negro"></button>
+                            <button type="button" class="color-dot" data-color="#e65100" style="background:#e65100"
+                                title="Naranja"></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── IMAGEN DE FIRMA ── -->
+                <div class="field-group">
+                    <label class="field-label">
+                        <span class="field-icon">🖼️</span> Imagen de Firma
+                    </label>
+
+                    <!-- Tabs -->
+                    <div class="tab-bar">
+                        <button type="button" class="tab-btn tab-active" id="tabPreset">
+                            🏷️ Marcas prediseñadas
+                        </button>
+                        <button type="button" class="tab-btn" id="tabCustom">
+                            📁 Subir imagen propia
+                        </button>
+                    </div>
+
+                    <!-- Panel: Presets -->
+                    <div id="tabPresetPanel">
+                        <div class="preset-grid" id="presetContainer">
+                            <!-- generado por JS -->
+                        </div>
+                    </div>
+
+                    <!-- Panel: Upload personalizado -->
+                    <div id="tabCustomPanel" style="display:none">
+                        <div class="upload-zone" id="uploadZone">
+                            <input type="file" id="inputLogo" accept="image/*" class="upload-input"
+                                aria-label="Subir logo personalizado" />
+                            <div class="upload-inner">
+                                <div class="upload-icon">⬆️</div>
+                                <p class="upload-text">Arrastra tu imagen aquí o
+                                    <span class="upload-link">haz clic para seleccionar</span>
+                                </p>
+                                <p class="upload-hint">PNG, JPG, SVG — Recomendado: 500×120px</p>
+                            </div>
+                        </div>
+                        <div class="logo-preview-wrap" id="logoPreviewWrap" style="display:none">
+                            <img id="logoPreviewImg" src="" alt="Vista previa del logo" class="logo-preview-img" />
+                            <button type="button" class="logo-remove-btn" id="removeLogoBtn"
+                                title="Eliminar imagen">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ACTIONS -->
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="resetBtn">
+                        ↺ Limpiar
+                    </button>
+                    <button type="button" class="btn btn-primary" id="copyBtn">
+                        📋 Copiar HTML
+                    </button>
+                    <button type="button" class="btn btn-download" id="downloadJpgBtn">
+                        ⬇️ Descargar JPG
+                    </button>
+                </div>
+
+                <div class="copy-feedback" id="copyFeedback" aria-live="polite"></div>
+
+            </form>
+        </section>
+
+        <!-- ══════════════════════════════════════════════
+         RIGHT PANEL: PREVIEW
+    ══════════════════════════════════════════════ -->
+        <section class="panel preview-panel glass" aria-label="Vista previa de la firma">
+            <div class="panel-header">
+                <h2 class="panel-title">Vista Previa</h2>
+                <p class="panel-subtitle">Así lucirá tu firma en Outlook / Gmail</p>
+            </div>
+
+            <!-- Simulación de ventana de correo -->
+            <div class="preview-email-mock">
+                <div class="email-topbar">
+                    <span class="email-dot red"></span>
+                    <span class="email-dot yellow"></span>
+                    <span class="email-dot green"></span>
+                    <span class="email-title-bar">Nuevo Mensaje — Outlook / Gmail</span>
+                </div>
+                <div class="email-body-mock">
+                    <p class="email-placeholder-text">
+                        Hola,<br><br>
+                        Espero que te encuentres bien. Te escribo para comentarte sobre…<br><br>
+                        Quedo atento a tus comentarios.<br><br>
+                        Saludos,
+                    </p>
+                    <!-- SIGNATURE PREVIEW -->
+                    <div id="signaturePreview" class="signature-block">
+                        <div class="sig-loading">✉ Completa el formulario para ver tu firma</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HTML generado -->
+            <div class="html-output-wrap glass-inner" id="htmlOutputWrap" style="display:none">
+                <div class="html-output-header">
+                    <span class="html-badge">HTML</span>
+                    <button type="button" class="btn-copy-small" id="copyBtnSmall">Copiar</button>
+                </div>
+                <pre class="html-code" id="htmlCodeDisplay"></pre>
+            </div>
+
+            <!-- Instrucciones -->
+            <div class="how-to glass-inner">
+                <h3 class="how-title">¿Cómo usar tu firma?</h3>
+                <ol class="how-list">
+                    <li>Elige tu marca y completa tus datos</li>
+                    <li>Haz clic en <strong>Copiar Firma HTML</strong></li>
+                    <li>En <strong>Outlook</strong>: Archivo → Opciones → Correo → Firmas → Nueva → pegar en HTML</li>
+                    <li>En <strong>Gmail</strong>: Configuración ⚙️ → Ver toda la configuración → Firma → pegar</li>
+                    <li>Guarda y ¡listo! 🎉</li>
+                </ol>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <p>FirmaPro &copy; 2026 — Generador de Firmas Corporativas · Valenzuela &amp; Delarze</p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
