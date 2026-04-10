@@ -605,8 +605,8 @@ function buildSignatureHTML() {
       <table cellpadding="0" cellspacing="0" border="0">
         <tr>
           ${logoSrc ? `<td style="padding:0 20px 0 0;vertical-align:middle;">${logoImg}</td>` : ''}
-          ${logoSrc ? `<td style="width:16px; border-left: ${grosor}px solid ${color}; padding:0;"></td>` : ''}
-          <td style="vertical-align:top;padding:${logoSrc ? '0' : '0 0 0 0'};">
+          ${logoSrc ? `<td style="width:25px; border-left: ${grosor}px solid ${color}; padding:0;"></td>` : ''}
+          <td style="vertical-align:top;padding-left:${logoSrc ? '25px' : '0'};">
             <table cellpadding="0" cellspacing="0" border="0">
               ${rows.join('\n              ')}
             </table>
