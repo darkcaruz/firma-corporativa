@@ -14,6 +14,7 @@ const state = {
     sucursal: '',
     color: '#1a2a6c',
     grosor: 2,
+    fontSize: 12,
     layout: 'vertical',
     logoSrc: null,      // URL base64 o ruta del logo activo
     logoMode: 'preset',  // 'preset' | 'custom'
@@ -70,6 +71,8 @@ const els = {
     colorPicker: () => document.getElementById('inputColor'),
     inputGrosor: () => document.getElementById('inputGrosor'),
     grosorValor: () => document.getElementById('grosorValor'),
+    inputFontSize: () => document.getElementById('inputFontSize'),
+    fontSizeValor: () => document.getElementById('fontSizeValor'),
     btnLayoutVertical: () => document.getElementById('btnLayoutVertical'),
     btnLayoutHorizontal: () => document.getElementById('btnLayoutHorizontal'),
     uploadZone: () => document.getElementById('uploadZone'),
@@ -162,6 +165,16 @@ function bindFormEvents() {
         grosorSel.addEventListener('input', () => {
             state.grosor = grosorSel.value;
             if (grosorVal) grosorVal.textContent = grosorSel.value + 'px';
+            renderSignature();
+        });
+    }
+
+    const fontSizeSel = els.inputFontSize();
+    const fontSizeVal = els.fontSizeValor();
+    if (fontSizeSel) {
+        fontSizeSel.addEventListener('input', () => {
+            state.fontSize = parseInt(fontSizeSel.value, 10);
+            if (fontSizeVal) fontSizeVal.textContent = fontSizeSel.value + 'px';
             renderSignature();
         });
     }
@@ -411,7 +424,7 @@ function showFeedback(msg, type = 'success') {
 function resetForm() {
     Object.assign(state, {
         nombre: '', cargo: '', telefono: '', correo: '',
-        sucursal: '', color: '#1a2a6c', grosor: 2, layout: 'vertical', logoSrc: null,
+        sucursal: '', color: '#1a2a6c', grosor: 2, fontSize: 12, layout: 'vertical', logoSrc: null,
         logoMode: 'preset', presetKey: null,
     });
 
@@ -428,6 +441,11 @@ function resetForm() {
     if (grosorSel) grosorSel.value = 2;
     const grosorVal = els.grosorValor();
     if (grosorVal) grosorVal.textContent = '2px';
+
+    const fontSizeSel = els.inputFontSize();
+    if (fontSizeSel) fontSizeSel.value = 12;
+    const fontSizeVal = els.fontSizeValor();
+    if (fontSizeVal) fontSizeVal.textContent = '12px';
 
     const layoutVert = els.btnLayoutVertical();
     const layoutHoriz = els.btnLayoutHorizontal();
@@ -466,7 +484,9 @@ function renderSignature() {
 
 // ─── Construir el HTML final de la firma ──────────────────────────────────
 function buildSignatureHTML() {
-    const { nombre, cargo, telefono, correo, sucursal, color, grosor, layout, logoSrc } = state;
+    const { nombre, cargo, telefono, correo, sucursal, color, grosor, layout, logoSrc, fontSize } = state;
+    const baseSize = fontSize || 12;
+    const nameSize = baseSize + 4;
 
     // Convertir color hex a rgb para la línea lateral
     const rgb = hexToRgb(color);
@@ -496,14 +516,14 @@ function buildSignatureHTML() {
         cleanPhone = telefono.replace(/[^0-9]/g, '');
     }
 
-    if (nombre) infoLines.push(`<span style="font-size:16px;font-weight:700;color:${color};">${escHtml(nombre)}</span>`);
-    if (cargo) infoLines.push(`<span style="font-size:12px;color:#555555;font-style:italic;">${escHtml(cargo)}</span>`);
-    if (telefono) infoLines.push(`<span style="font-size:12px;color:#444444;"><a href="https://wa.me/${cleanPhone}" target="_blank" style="text-decoration:none;"><img src="https://firma.valdelarze.cl/whatsapp.png" alt="WA" width="13" height="13" style="vertical-align:middle; border:0; margin-right:3px;"></a><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#444444;text-decoration:none;vertical-align:middle;">${escHtml(telefono)}</a></span>`);
-    if (correo) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;vertical-align:middle;">${escHtml(correo)}</a></span>`);
-    if (sucursal) infoLines.push(`<span style="font-size:12px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">🏢</span>&nbsp;<span style="vertical-align:middle;">${escHtml(sucursal)}</span></span>`);
+    if (nombre) infoLines.push(`<span style="font-size:${nameSize}px;font-weight:700;color:${color};">${escHtml(nombre)}</span>`);
+    if (cargo) infoLines.push(`<span style="font-size:${baseSize}px;color:#555555;font-style:italic;">${escHtml(cargo)}</span>`);
+    if (telefono) infoLines.push(`<span style="font-size:${baseSize}px;color:#444444;"><a href="https://wa.me/${cleanPhone}" target="_blank" style="text-decoration:none;"><img src="https://firma.valdelarze.cl/whatsapp.png" alt="WA" width="${baseSize + 1}" height="${baseSize + 1}" style="vertical-align:middle; border:0; margin-right:3px;"></a><a href="https://wa.me/${cleanPhone}" target="_blank" style="color:#444444;text-decoration:none;vertical-align:middle;">${escHtml(telefono)}</a></span>`);
+    if (correo) infoLines.push(`<span style="font-size:${baseSize}px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">✉</span>&nbsp;<a href="mailto:${escHtml(correo)}" style="color:${color};text-decoration:none;vertical-align:middle;">${escHtml(correo)}</a></span>`);
+    if (sucursal) infoLines.push(`<span style="font-size:${baseSize}px;color:#444444;"><span style="color:${color};font-weight:600;vertical-align:middle;">🏢</span>&nbsp;<span style="vertical-align:middle;">${escHtml(sucursal)}</span></span>`);
 
     if (infoLines.length > 0) {
-        rows.push(`<tr><td style="padding:0; margin:0; font-family:Calibri,Segoe UI,Arial,sans-serif; line-height:14px; mso-line-height-rule:exactly;">
+        rows.push(`<tr><td style="padding:0; margin:0; font-family:Calibri,Segoe UI,Arial,sans-serif; line-height:${baseSize + 2}px; mso-line-height-rule:exactly;">
           ${infoLines.join('<br>')}
         </td></tr>`);
     }
