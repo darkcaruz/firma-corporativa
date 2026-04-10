@@ -320,11 +320,68 @@ function bindButtons() {
     const copySmall = document.getElementById('copyBtnSmall');
     const reset = els.resetBtn();
     const downloadJpg = document.getElementById('downloadJpgBtn');
+    const copyRichBtn = document.getElementById('copyRichBtn');
 
     if (copy) copy.addEventListener('click', copySignatureHTML);
     if (copySmall) copySmall.addEventListener('click', copySignatureHTML);
     if (reset) reset.addEventListener('click', resetForm);
     if (downloadJpg) downloadJpg.addEventListener('click', downloadSignatureJpg);
+    if (copyRichBtn) copyRichBtn.addEventListener('click', copySignatureRich);
+}
+
+function copySignatureRich() {
+    if (state.nombre) {
+        const url = `/registro_de_uso?usuario=${encodeURIComponent(state.nombre)}&cargo=${encodeURIComponent(state.cargo)}&accion=Copia_Firma_Rich`;
+        fetch(url, { mode: 'no-cors' }).catch(() => { });
+    }
+
+    const html = buildSignatureHTML();
+
+    // Intenta usar la API moderna de portapapeles para copiar como HTML enriquecido
+    if (navigator.clipboard && window.ClipboardItem) {
+        const typeHtml = "text/html";
+        const typePlain = "text/plain";
+        try {
+            const blobHtml = new Blob([html], { type: typeHtml });
+            // Genera una versión texto plano simple quitando las etiquetas
+            const blobPlain = new Blob([html.replace(/<[^>]+>/g, '')], { type: typePlain });
+
+            const data = [new ClipboardItem({
+                [typeHtml]: blobHtml,
+                [typePlain]: blobPlain,
+            })];
+
+            navigator.clipboard.write(data).then(() => {
+                showFeedback('✅ ¡Firma copiada! (Pégala en tu correo)', 'success');
+            }).catch(err => {
+                fallbackCopyRich();
+            });
+            return;
+        } catch (e) {
+            fallbackCopyRich();
+            return;
+        }
+    }
+    fallbackCopyRich();
+}
+
+function fallbackCopyRich() {
+    const preview = document.getElementById('signaturePreview');
+    if (!preview) return;
+
+    const range = document.createRange();
+    range.selectNodeContents(preview);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+
+    try {
+        document.execCommand('copy');
+        showFeedback('✅ ¡Firma copiada! (Pégala en tu correo)', 'success');
+    } catch (err) {
+        showFeedback('❌ Error al copiar la firma', 'error');
+    }
+    selection.removeAllRanges();
 }
 
 async function copySignatureHTML() {
