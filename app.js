@@ -5,14 +5,13 @@
 
 'use strict';
 
-// ─── Estado de la aplicación ───────────────────────────────────────────────
 const state = {
     nombre: '',
     cargo: '',
     telefono: '',
     correo: '',
     sucursal: '',
-    color: '#1a2a6c',
+    color: '#000000',
     grosor: 2,
     fontSize: 12,
     layout: 'vertical',
@@ -481,7 +480,7 @@ function showFeedback(msg, type = 'success') {
 function resetForm() {
     Object.assign(state, {
         nombre: '', cargo: '', telefono: '', correo: '',
-        sucursal: '', color: '#1a2a6c', grosor: 2, fontSize: 12, layout: 'vertical', logoSrc: null,
+        sucursal: '', color: '#000000', grosor: 2, fontSize: 12, layout: 'vertical', logoSrc: null,
         logoMode: 'preset', presetKey: null,
     });
 
